@@ -1,0 +1,28 @@
+// ----------------------------------------------------------------------
+
+export const role = [
+  'Admin',
+  'Organizer',
+  'Admin',
+  'Organizer',
+  'Admin',
+  'Organizer',
+  'Admin',
+  'Organizer',
+  'Admin',
+  'Organizer',
+  'Admin',
+  'Organizer',
+  'Admin',
+  'Organizer',
+  'Admin',
+  'Organizer',
+  'Admin',
+  'Organizer',
+  'Admin',
+  'Organizer',
+  'Admin',
+  'Organizer',
+  'Admin',
+  'Organizer',
+];
