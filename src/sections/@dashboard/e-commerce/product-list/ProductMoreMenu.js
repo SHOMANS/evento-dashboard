@@ -1,11 +1,7 @@
 import PropTypes from 'prop-types';
-import { paramCase } from 'change-case';
 import { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import { MenuItem, IconButton } from '@mui/material';
-// routes
-import { PATH_DASHBOARD } from '../../../../routes/paths';
 // components
 import Iconify from '../../../../components/Iconify';
 import MenuPopover from '../../../../components/MenuPopover';
@@ -13,11 +9,11 @@ import MenuPopover from '../../../../components/MenuPopover';
 // ----------------------------------------------------------------------
 
 ProductMoreMenu.propTypes = {
-  onDelete: PropTypes.func,
-  productName: PropTypes.string,
+  onReject: PropTypes.func,
+  onApprove: PropTypes.func,
 };
 
-export default function ProductMoreMenu({ onDelete, productName }) {
+export default function ProductMoreMenu({ onReject, onApprove }) {
   const [open, setOpen] = useState(null);
 
   const handleOpen = (event) => {
@@ -53,17 +49,14 @@ export default function ProductMoreMenu({ onDelete, productName }) {
           '& .MuiMenuItem-root': { px: 1, typography: 'body2', borderRadius: 0.75 },
         }}
       >
-        <MenuItem onClick={onDelete} sx={{ color: 'error.main' }}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ ...ICON }} />
-          Delete
+        <MenuItem onClick={onApprove} sx={{ color: 'success.main' }}>
+          <Iconify icon={'icon-park-solid:correct'} sx={{ ...ICON }} />
+          موافقة
         </MenuItem>
 
-        {/* here to start Mo batra
-         */}
-
-        <MenuItem component={RouterLink} to={`${PATH_DASHBOARD.general.editPackage.replace(':id', id)}`}>
-          <Iconify icon={'eva:edit-fill'} sx={{ ...ICON }} />
-          Edit
+        <MenuItem onClick={onReject} sx={{ color: 'error.main' }}>
+          <Iconify icon={'maki:cross'} sx={{ ...ICON }} />
+          رفض
         </MenuItem>
       </MenuPopover>
     </>

@@ -11,29 +11,12 @@ import { dispatch } from '../store';
 const initialState = {
   isLoading: false,
   error: null,
-  products: [],
-  product: null,
-  sortBy: null,
-  filters: {
-    gender: [],
-    category: 'All',
-    colors: [],
-    priceRange: '',
-    rating: '',
-  },
-  checkout: {
-    activeStep: 0,
-    cart: [],
-    subtotal: 0,
-    total: 0,
-    discount: 0,
-    shipping: 0,
-    billing: null,
-  },
+  events: [],
+  event: null,
 };
 
 const slice = createSlice({
-  name: 'product',
+  name: 'event',
   initialState,
   reducers: {
     // START LOADING
@@ -48,141 +31,25 @@ const slice = createSlice({
     },
 
     // GET PRODUCTS
-    getProductsSuccess(state, action) {
+    getEventsSuccess(state, action) {
       state.isLoading = false;
-      state.products = action.payload;
+      state.events = action.payload;
     },
 
     // GET PRODUCT
-    getProductSuccess(state, action) {
+    getEventSuccess(state, action) {
       state.isLoading = false;
-      state.product = action.payload;
+      state.event = action.payload;
     },
 
-    //  SORT & FILTER PRODUCTS
-    sortByProducts(state, action) {
-      state.sortBy = action.payload;
+    approveEvent(state, action) {
+      state.isLoading = false;
+      state.events = state.events.map((item) => (item._id === action.payload ? { ...item, status: 'accepted' } : item));
     },
 
-    filterProducts(state, action) {
-      state.filters.gender = action.payload.gender;
-      state.filters.category = action.payload.category;
-      state.filters.colors = action.payload.colors;
-      state.filters.priceRange = action.payload.priceRange;
-      state.filters.rating = action.payload.rating;
-    },
-
-    // CHECKOUT
-    getCart(state, action) {
-      const cart = action.payload;
-
-      const subtotal = sum(cart.map((cartItem) => cartItem.price * cartItem.quantity));
-      const discount = cart.length === 0 ? 0 : state.checkout.discount;
-      const shipping = cart.length === 0 ? 0 : state.checkout.shipping;
-      const billing = cart.length === 0 ? null : state.checkout.billing;
-
-      state.checkout.cart = cart;
-      state.checkout.discount = discount;
-      state.checkout.shipping = shipping;
-      state.checkout.billing = billing;
-      state.checkout.subtotal = subtotal;
-      state.checkout.total = subtotal - discount;
-    },
-
-    addCart(state, action) {
-      const product = action.payload;
-      const isEmptyCart = state.checkout.cart.length === 0;
-
-      if (isEmptyCart) {
-        state.checkout.cart = [...state.checkout.cart, product];
-      } else {
-        state.checkout.cart = state.checkout.cart.map((_product) => {
-          const isExisted = _product.id === product.id;
-          if (isExisted) {
-            return {
-              ..._product,
-              quantity: _product.quantity + 1,
-            };
-          }
-          return _product;
-        });
-      }
-      state.checkout.cart = uniqBy([...state.checkout.cart, product], 'id');
-    },
-
-    deleteCart(state, action) {
-      const updateCart = state.checkout.cart.filter((item) => item.id !== action.payload);
-
-      state.checkout.cart = updateCart;
-    },
-
-    resetCart(state) {
-      state.checkout.activeStep = 0;
-      state.checkout.cart = [];
-      state.checkout.total = 0;
-      state.checkout.subtotal = 0;
-      state.checkout.discount = 0;
-      state.checkout.shipping = 0;
-      state.checkout.billing = null;
-    },
-
-    onBackStep(state) {
-      state.checkout.activeStep -= 1;
-    },
-
-    onNextStep(state) {
-      state.checkout.activeStep += 1;
-    },
-
-    onGotoStep(state, action) {
-      const goToStep = action.payload;
-      state.checkout.activeStep = goToStep;
-    },
-
-    increaseQuantity(state, action) {
-      const productId = action.payload;
-      const updateCart = state.checkout.cart.map((product) => {
-        if (product.id === productId) {
-          return {
-            ...product,
-            quantity: product.quantity + 1,
-          };
-        }
-        return product;
-      });
-
-      state.checkout.cart = updateCart;
-    },
-
-    decreaseQuantity(state, action) {
-      const productId = action.payload;
-      const updateCart = state.checkout.cart.map((product) => {
-        if (product.id === productId) {
-          return {
-            ...product,
-            quantity: product.quantity - 1,
-          };
-        }
-        return product;
-      });
-
-      state.checkout.cart = updateCart;
-    },
-
-    createBilling(state, action) {
-      state.checkout.billing = action.payload;
-    },
-
-    applyDiscount(state, action) {
-      const discount = action.payload;
-      state.checkout.discount = discount;
-      state.checkout.total = state.checkout.subtotal - discount;
-    },
-
-    applyShipping(state, action) {
-      const shipping = action.payload;
-      state.checkout.shipping = shipping;
-      state.checkout.total = state.checkout.subtotal - state.checkout.discount + shipping;
+    rejectEvent(state, action) {
+      state.isLoading = false;
+      state.events = state.events.map((item) => (item._id === action.payload ? { ...item, status: 'rejected' } : item));
     },
   },
 });
@@ -204,18 +71,20 @@ export const {
   applyDiscount,
   increaseQuantity,
   decreaseQuantity,
-  sortByProducts,
-  filterProducts,
+  sortByEvents,
+  filterEvents,
 } = slice.actions;
 
 // ----------------------------------------------------------------------
 
-export function getProducts() {
+export function getEvents() {
   return async () => {
     dispatch(slice.actions.startLoading());
     try {
-      const response = await axios.get('/api/products');
-      dispatch(slice.actions.getProductsSuccess(response.data.products));
+      const id = JSON.parse(window.localStorage.getItem('user'))._id;
+      const response = await axios.get(`/api/events/organizer/${id || '6399cd56bb273376032cb37c'}`);
+      console.log(response);
+      dispatch(slice.actions.getEventsSuccess(response.data.events));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -224,14 +93,44 @@ export function getProducts() {
 
 // ----------------------------------------------------------------------
 
-export function getProduct(name) {
+export function approveEvent(id) {
   return async () => {
     dispatch(slice.actions.startLoading());
     try {
-      const response = await axios.get('/api/products/product', {
+      await axios.put(`api/events/${id}/accept`);
+      dispatch(slice.actions.approveEvent(id));
+    } catch (error) {
+      console.error(error);
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+// ----------------------------------------------------------------------
+
+export function rejectEvent(id) {
+  return async () => {
+    dispatch(slice.actions.startLoading());
+    try {
+      await axios.put(`api/events/${id}/reject`);
+      dispatch(slice.actions.rejectEvent(id));
+    } catch (error) {
+      console.error(error);
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+// ----------------------------------------------------------------------
+
+export function getEvent(name) {
+  return async () => {
+    dispatch(slice.actions.startLoading());
+    try {
+      const response = await axios.get('/api/events/event', {
         params: { name },
       });
-      dispatch(slice.actions.getProductSuccess(response.data.product));
+      dispatch(slice.actions.getEventSuccess(response.data.event));
     } catch (error) {
       console.error(error);
       dispatch(slice.actions.hasError(error));
