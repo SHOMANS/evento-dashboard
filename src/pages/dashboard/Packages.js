@@ -1,28 +1,19 @@
 import { useEffect, useState, useCallback } from 'react';
 import { sentenceCase } from 'change-case';
-import { useParams } from 'react-router-dom';
 // @mui
-import { Box, Card, Divider, Container, Typography, Pagination } from '@mui/material';
+import { Container, Typography } from '@mui/material';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
-import useIsMountedRef from '../../hooks/useIsMountedRef';
 // utils
 import axios from '../../utils/axios';
 // components
 import Page from '../../components/Page';
-import Markdown from '../../components/Markdown';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import { SkeletonPost } from '../../components/skeleton';
 // sections
-import {
-  BlogPostHero,
-  BlogPostTags,
-  BlogPostRecent,
-  BlogPostCommentList,
-  BlogPostCommentForm,
-} from '../../sections/@dashboard/blog';
+import { BlogPostRecent } from '../../sections/@dashboard/blog';
 import { API_URL } from '../../api';
 
 // ----------------------------------------------------------------------
@@ -30,11 +21,7 @@ import { API_URL } from '../../api';
 export default function Packages() {
   const { themeStretch } = useSettings();
 
-  const isMountedRef = useIsMountedRef();
-
-  const { title } = useParams();
-
-  const [recentPosts, setRecentPosts] = useState([]);
+  const [recentPosts] = useState([]);
 
   const [data, setData] = useState(null);
 

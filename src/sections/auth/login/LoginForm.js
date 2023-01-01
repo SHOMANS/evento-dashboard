@@ -1,6 +1,5 @@
 import * as Yup from 'yup';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 // form
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -20,8 +19,6 @@ export default function LoginForm() {
   const { login } = useAuth();
 
   const isMountedRef = useIsMountedRef();
-
-  const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
 

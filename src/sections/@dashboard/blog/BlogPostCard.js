@@ -102,15 +102,12 @@ export default function BlogPostCard({ post, index }) {
 // ----------------------------------------------------------------------
 
 PostContent.propTypes = {
-  comment: PropTypes.number,
   createdAt: PropTypes.string,
   index: PropTypes.number,
-  share: PropTypes.number,
   title: PropTypes.string,
-  view: PropTypes.number,
 };
 
-export function PostContent({ title, view, comment, share, createdAt, index }) {
+export function PostContent({ title, createdAt, index }) {
   const isDesktop = useResponsive('up', 'md');
 
   const linkTo = `${PATH_DASHBOARD.blog.root}/post/${paramCase(title)}`;
