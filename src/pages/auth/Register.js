@@ -73,9 +73,9 @@ export default function Register() {
           <Logo />
           {smUp && (
             <Typography variant="body2" sx={{ mt: { md: -2 } }}>
-              Already have an account?{' '}
+              تمتلك حساب مسبقاً؟{' '}
               <Link variant="subtitle2" component={RouterLink} to={PATH_AUTH.login}>
-                Login
+                قم بتسجيل الدخول
               </Link>
             </Typography>
           )}
@@ -84,7 +84,7 @@ export default function Register() {
         {mdUp && (
           <SectionStyle>
             <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-              Manage the job more effectively with Minimal
+              قم بانشاء حساب لتنظيم فعاليات الخاصة.
             </Typography>
             <Image
               alt="register"
@@ -98,9 +98,9 @@ export default function Register() {
             <Box sx={{ mb: 5, display: 'flex', alignItems: 'center' }}>
               <Box sx={{ flexGrow: 1 }}>
                 <Typography variant="h4" gutterBottom>
-                  Get started absolutely free.
+                  انشئ حساب مجاني!
                 </Typography>
-                <Typography sx={{ color: 'text.secondary' }}>Free forever. No credit card needed.</Typography>
+                <Typography sx={{ color: 'text.secondary' }}>انشئ حساب لادارة زبائنك وفعالياتك</Typography>
               </Box>
               <Tooltip title={capitalCase(method)}>
                 <>
@@ -116,22 +116,22 @@ export default function Register() {
             <RegisterForm />
 
             <Typography variant="body2" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
-              By registering, I agree to Minimal&nbsp;
+              بقيامك بتسجيل حساب انت توافق على &nbsp;
               <Link underline="always" color="text.primary" href="#">
-                Terms of Service
+                شزوط الخدمة
               </Link>
-              and
+              &nbsp;و&nbsp;
               <Link underline="always" color="text.primary" href="#">
-                Privacy Policy
+                سياسة الخصوصية
               </Link>
               .
             </Typography>
 
             {!smUp && (
               <Typography variant="body2" sx={{ mt: 3, textAlign: 'center' }}>
-                Already have an account?{' '}
+                لديك حساب مسبقاً؟{' '}
                 <Link variant="subtitle2" to={PATH_AUTH.login} component={RouterLink}>
-                  Login
+                  سجل دخول
                 </Link>
               </Typography>
             )}

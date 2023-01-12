@@ -62,11 +62,11 @@ export default function LoginForm() {
       <Stack spacing={3}>
         {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}
 
-        <RHFTextField name="email" label="Email address" />
+        <RHFTextField name="email" label="البريد الالكتروني" />
 
         <RHFTextField
           name="password"
-          label="Password"
+          label="كلمة المرور"
           type={showPassword ? 'text' : 'password'}
           InputProps={{
             endAdornment: (
@@ -81,11 +81,11 @@ export default function LoginForm() {
       </Stack>
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
-        <RHFCheckbox name="remember" label="Remember me" />
+        <RHFCheckbox name="remember" label="تذكرني" />
       </Stack>
 
       <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
-        Login
+        تسجيل دخول
       </LoadingButton>
     </FormProvider>
   );

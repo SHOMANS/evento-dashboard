@@ -74,9 +74,9 @@ export default function Login() {
           <Logo />
           {smUp && (
             <Typography variant="body2" sx={{ mt: { md: -2 } }}>
-              Don’t have an account? {''}
+              ليس لديك حساب؟ {''}
               <Link variant="subtitle2" component={RouterLink} to={PATH_AUTH.register}>
-                Get started
+                قم بانشاء حساب جديد كمنظم مناسبات
               </Link>
             </Typography>
           )}
@@ -85,7 +85,7 @@ export default function Login() {
         {mdUp && (
           <SectionStyle>
             <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-              Hi, Welcome Back
+              مرحبا بك من جديد
             </Typography>
             <Image
               alt="login"
@@ -99,9 +99,9 @@ export default function Login() {
             <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
               <Box sx={{ flexGrow: 1 }}>
                 <Typography variant="h4" gutterBottom>
-                  Sign in to EVENTO
+                  قم بتسجيل الدخول الى ايفنتو
                 </Typography>
-                <Typography sx={{ color: 'text.secondary' }}>Enter your details below.</Typography>
+                <Typography sx={{ color: 'text.secondary' }}>أدخل معلوماتك</Typography>
               </Box>
 
               <Tooltip title={capitalCase(method)} placement="right">
@@ -119,7 +119,7 @@ export default function Login() {
 
             {!smUp && (
               <Typography variant="body2" align="center" sx={{ mt: 3 }}>
-                Don’t have an account?{' '}
+                لا تمتلك حساب؟ قم بانشاء حساب جديد كمنظم فعاليات.{' '}
                 <Link variant="subtitle2" component={RouterLink} to={PATH_AUTH.register}>
                   Get started
                 </Link>

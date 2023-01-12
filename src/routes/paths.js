@@ -24,7 +24,7 @@ export const PATH_DASHBOARD = {
     createPackage: path(ROOTS_DASHBOARD, '/packages/create'),
     editPackage: path(ROOTS_DASHBOARD, '/packages/edit/:id'),
     events: path(ROOTS_DASHBOARD, '/events'),
-    viewEevent: path(ROOTS_DASHBOARD, '/events/view/:id'),
+    viewEvent: path(ROOTS_DASHBOARD, '/events/view/:id'),
     orgaccount: path(ROOTS_DASHBOARD, '/orgaccount'),
   },
 };

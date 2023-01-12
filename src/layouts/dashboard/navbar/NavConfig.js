@@ -18,14 +18,13 @@ const navConfig = [
   {
     subheader: 'management',
     items: [
+      { title: 'My Events', path: PATH_DASHBOARD.general.events, icon: ICONS.booking },
       {
         title: 'Packages',
         path: PATH_DASHBOARD.general.packages,
         icon: ICONS.cart,
       },
-      { title: 'My Events', path: PATH_DASHBOARD.general.events, icon: ICONS.booking },
       { title: 'New Package', path: PATH_DASHBOARD.general.createPackage, icon: ICONS.ecommerce },
-      { title: 'Organizer Account', path: PATH_DASHBOARD.general.orgaccount, icon: ICONS.ecommerce },
     ],
   },
 ];

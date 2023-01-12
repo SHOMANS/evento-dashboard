@@ -1,9 +1,20 @@
 import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
-
+import { Link } from 'react-router-dom';
 // @mui
 import { useTheme } from '@mui/material/styles';
-import { Card, Table, TableRow, TableBody, TableCell, Container, Typography, TableContainer } from '@mui/material';
+import {
+  Card,
+  Table,
+  TableRow,
+  TableBody,
+  TableCell,
+  Container,
+  Typography,
+  TableContainer,
+  Box,
+  CircularProgress,
+} from '@mui/material';
 // redux
 import { useDispatch, useSelector } from '../../redux/store';
 import { approveEvent, getEvents, rejectEvent } from '../../redux/slices/product';
@@ -40,7 +51,7 @@ export default function Events() {
   const theme = useTheme();
   const dispatch = useDispatch();
 
-  const { events } = useSelector((state) => state.product);
+  const { events, isLoading } = useSelector((state) => state.product);
 
   const [productList, setProductList] = useState([]);
   const [order, setOrder] = useState('asc');
@@ -76,7 +87,7 @@ export default function Events() {
     <Page title="Ecommerce: Product List">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Product List"
+          heading="المناسبات"
           links={[{ name: 'لوحة التحكم', href: PATH_DASHBOARD.general.app }, { name: 'قائمة المناسبات' }]}
         />
 
@@ -93,62 +104,74 @@ export default function Events() {
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
                 />
+                {isLoading || (
+                  <TableBody>
+                    {events.map((row) => {
+                      const { _id, name, image, date, status, type, description } = row;
+                      const isItemSelected = selected.indexOf(name) !== -1;
 
-                <TableBody>
-                  {events.map((row) => {
-                    const { _id, name, image, date, status, type, description } = row;
-
-                    const isItemSelected = selected.indexOf(name) !== -1;
-
-                    return (
-                      <TableRow
-                        hover
-                        key={_id}
-                        tabIndex={-1}
-                        role="checkbox"
-                        selected={isItemSelected}
-                        aria-checked={isItemSelected}
-                      >
-                        <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
-                          <Image
-                            disabledEffect
-                            alt={name}
-                            src={image}
-                            sx={{ borderRadius: 1.5, width: 64, height: 64, mr: 2 }}
-                          />
-                          <Typography variant="subtitle2" noWrap>
-                            {name}
-                          </Typography>
-                        </TableCell>
-                        <TableCell style={{ minWidth: 160 }}>{fDate(date)}</TableCell>
-                        <TableCell style={{ minWidth: 160 }}>{type}</TableCell>
-                        <TableCell style={{ minWidth: 160 }}>
-                          <Label
-                            variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                            color={
-                              (status === 'rejected' && 'error') || (status === 'waiting' && 'warning') || 'success'
-                            }
-                          >
-                            {status ? sentenceCase(status) : ''}
-                          </Label>
-                        </TableCell>
-                        <TableCell align="left">{description}</TableCell>
-                        <TableCell align="right">
-                          <ProductMoreMenu
-                            onApprove={() => {
-                              dispatch(approveEvent(_id));
-                            }}
-                            onReject={() => {
-                              dispatch(rejectEvent(_id));
-                            }}
-                          />
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
+                      return (
+                        <TableRow
+                          hover
+                          key={_id}
+                          tabIndex={-1}
+                          role="checkbox"
+                          selected={isItemSelected}
+                          aria-checked={isItemSelected}
+                        >
+                          <TableCell component={Link} to={`${_id}`} sx={{ display: 'flex', alignItems: 'center' }}>
+                            <Image
+                              disabledEffect
+                              alt={name}
+                              src={
+                                (image &&
+                                  image === 'imageSrc' &&
+                                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEYwZCi2lIDKGVbMKqndPXuTLfPjeSsrDnpA&usqp=CAU') ||
+                                image
+                              }
+                              sx={{ borderRadius: 1.5, width: 64, height: 64, mr: 2 }}
+                            />
+                            <Typography variant="subtitle2" noWrap>
+                              {name}
+                            </Typography>
+                          </TableCell>
+                          <TableCell style={{ minWidth: 160 }}>{fDate(date)}</TableCell>
+                          <TableCell style={{ minWidth: 160 }}>{type}</TableCell>
+                          <TableCell style={{ minWidth: 160 }}>
+                            <Label
+                              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+                              color={
+                                (status === 'rejected' && 'error') || (status === 'waiting' && 'warning') || 'success'
+                              }
+                            >
+                              {status ? sentenceCase(status) : ''}
+                            </Label>
+                          </TableCell>
+                          <TableCell align="left">{description}</TableCell>
+                          <TableCell align="right">
+                            <ProductMoreMenu
+                              onApprove={() => {
+                                dispatch(approveEvent(_id));
+                              }}
+                              onReject={() => {
+                                dispatch(rejectEvent(_id));
+                              }}
+                            />
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                )}
               </Table>
             </TableContainer>
+            {isLoading ? (
+              <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 300 }}>
+                <CircularProgress />
+              </Box>
+            ) : (
+              ''
+            )}
           </Scrollbar>
         </Card>
       </Container>

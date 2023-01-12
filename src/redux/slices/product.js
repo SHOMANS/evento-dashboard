@@ -43,11 +43,13 @@ const slice = createSlice({
     approveEvent(state, action) {
       state.isLoading = false;
       state.events = state.events.map((item) => (item._id === action.payload ? { ...item, status: 'accepted' } : item));
+      state.event = { ...state.event, status: 'accepted' };
     },
 
     rejectEvent(state, action) {
       state.isLoading = false;
       state.events = state.events.map((item) => (item._id === action.payload ? { ...item, status: 'rejected' } : item));
+      state.event = { ...state.event, status: 'rejected' };
     },
   },
 });
@@ -121,14 +123,12 @@ export function rejectEvent(id) {
 
 // ----------------------------------------------------------------------
 
-export function getEvent(name) {
+export function getEvent(id) {
   return async () => {
     dispatch(slice.actions.startLoading());
     try {
-      const response = await axios.get('/api/events/event', {
-        params: { name },
-      });
-      dispatch(slice.actions.getEventSuccess(response.data.event));
+      const response = await axios.get(`/api/events/${id}`);
+      dispatch(slice.actions.getEventSuccess(response.data));
     } catch (error) {
       console.error(error);
       dispatch(slice.actions.hasError(error));

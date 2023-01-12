@@ -1,6 +1,7 @@
 import { Suspense, lazy } from 'react';
 import { Navigate, useRoutes, useLocation } from 'react-router-dom';
 // guards
+import SingleEvent from '../pages/dashboard/SingleEvent';
 import GuestGuard from '../guards/GuestGuard';
 // components
 import LoadingScreen from '../components/LoadingScreen';
@@ -61,6 +62,7 @@ export default function Router() {
         { path: 'packages', element: <Packages /> },
         { path: 'profile', element: <UserProfile /> },
         { path: 'events', element: <Events /> },
+        { path: 'events/:id', element: <SingleEvent /> },
         { path: 'orgaccount', element: <OrgAccount /> },
         // { path: 'booking', element: <GeneralBooking /> },
       ],
